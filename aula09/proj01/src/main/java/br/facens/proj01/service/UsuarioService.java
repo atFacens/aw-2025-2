@@ -34,9 +34,42 @@ public class UsuarioService {
 
     public List<UsuarioDTO> findAll() {
         List<UsuarioDTO> usuariosDTO = new ArrayList<>();
-        repo.findAll().forEach((usuario)->{
+        repo.findAll().forEach((usuario) -> {
             usuariosDTO.add(new UsuarioDTO(usuario));
         });
         return usuariosDTO;
+    }
+
+    public UsuarioDTO updateUsuario(int id, RequestNewUser newUser) {
+        Usuario usuario = newUser.toUsuario();
+        usuario.setId(id);
+
+        Usuario usuarioUpdated = repo.save(usuario);
+        return new UsuarioDTO(usuarioUpdated);
+    }
+
+    public Optional<UsuarioDTO> updatePartialUsuario(int id, RequestNewUser newUser) {
+        Optional<Usuario> optUsuario = repo.findById(id);
+
+        if (optUsuario.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Usuario usuario = optUsuario.get();
+
+        if (newUser.getNome() != null) {
+            usuario.setNome(newUser.getNome());
+        }
+
+        if (newUser.getEmail() != null) {
+            usuario.setEmail(newUser.getEmail());
+        }
+
+        if (newUser.getSenha() != null) {
+            usuario.setSenha(newUser.getSenha());
+        }
+
+        Usuario usuarioUpdated = repo.save(usuario);
+        return Optional.of(new UsuarioDTO(usuarioUpdated));
     }
 }

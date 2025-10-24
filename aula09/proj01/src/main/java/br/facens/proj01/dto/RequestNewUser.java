@@ -16,4 +16,17 @@ public class RequestNewUser {
     public Usuario toUsuario() {
         return new Usuario(nome, email, senha);
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
 }
